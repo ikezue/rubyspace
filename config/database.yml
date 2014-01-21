@@ -1,0 +1,11 @@
+development:
+  url: <%= ENV.fetch('DATABASE_URL') %>
+
+test:
+  url: <%= ENV.fetch('DATABASE_URL') %>
+
+staging:
+  url: <%= ENV.fetch('DATABASE_URL') %>
+
+production:
+  url: <%= ENV.fetch('DATABASE_URL') %>
