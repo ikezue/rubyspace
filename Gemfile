@@ -18,8 +18,10 @@ gem 'uglifier',             '~> 2.1.1'
 group :development do
   gem 'better_errors',      '~> 1.1.0'
   gem 'binding_of_caller',  '~> 0.7.2'
+  gem 'foundation-rails',   '~> 5.0.3'
   gem 'meta_request',       '~> 0.2.8'
   gem 'pry-rails'
+  gem 'rails_layout',       '~> 1.0.5'
 end
 
 group :development, :test do
