@@ -22,7 +22,7 @@ group :development do
   gem 'binding_of_caller',  '~> 0.7.2'
   gem 'foundation-rails',   '~> 5.0.3'
   gem 'meta_request',       '~> 0.2.8'
-  gem 'pry-rails'
+  gem 'pry-rails',          '~> 0.3.2'
   gem 'rails_layout',       '~> 1.0.5'
 end
 
