@@ -9,6 +9,7 @@ gem 'pg',                   '~> 0.15.1'
 
 gem 'coffee-rails',         '~> 4.0.0'
 gem 'compass-rails',        '~> 1.1.3'
+gem 'high_voltage',         '~> 2.1.0'
 gem 'jbuilder',             '~> 1.4.2'
 gem 'jquery-rails',         '~> 3.0.2'
 gem 'sass-rails',           '~> 4.0.1'
