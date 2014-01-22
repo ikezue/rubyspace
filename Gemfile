@@ -7,12 +7,13 @@ gem 'rails',                '4.1.0.beta1'
 gem 'bcrypt-ruby',          '~> 3.0.1'
 gem 'pg',                   '~> 0.15.1'
 
-gem 'sass-rails',           '~> 4.0.1'
-gem 'uglifier',             '~> 2.1.1'
 gem 'coffee-rails',         '~> 4.0.0'
+gem 'compass-rails',        '~> 1.1.3'
 gem 'jbuilder',             '~> 1.4.2'
 gem 'jquery-rails',         '~> 3.0.2'
 gem 'turbolinks',           '~> 1.2.0'
+gem 'sass-rails',           '~> 4.0.1'
+gem 'uglifier',             '~> 2.1.1'
 
 group :development do
   gem 'better_errors',      '~> 1.1.0'
