@@ -11,8 +11,9 @@ gem 'coffee-rails',         '~> 4.0.0'
 gem 'compass-rails',        '~> 1.1.3'
 gem 'jbuilder',             '~> 1.4.2'
 gem 'jquery-rails',         '~> 3.0.2'
-gem 'turbolinks',           '~> 1.2.0'
 gem 'sass-rails',           '~> 4.0.1'
+gem 'simple_form',          '~> 3.0.1'
+gem 'turbolinks',           '~> 1.2.0'
 gem 'uglifier',             '~> 2.1.1'
 
 group :development do
