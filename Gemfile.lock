@@ -47,6 +47,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    ace-rails-ap (2.0.0)
     addressable (2.3.5)
     arel (5.0.0)
     atomic (1.1.14)
@@ -247,6 +248,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ace-rails-ap
   bcrypt-ruby (~> 3.0.1)
   better_errors (~> 1.1.0)
   binding_of_caller (~> 0.7.2)
