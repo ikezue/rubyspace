@@ -5,7 +5,6 @@
     <title><%= content_for?(:title) ? yield(:title) : "Rubyspace" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Rubyspace" %>">
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
-    <%# Modernizr is required for Zurb Foundation %>
     <%= javascript_include_tag "vendor/modernizr" %>
     <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>
@@ -15,8 +14,12 @@
       <%= render 'layouts/navigation' %>
     </header>
     <main role="main">
-       <%= render 'layouts/messages' %>
-       <%= yield %>
+      <div class="messages">
+        <%= render 'layouts/messages' %>
+      </div>
+      <div class="content">
+        <%= yield %>
+      </div>
     </main>
   </body>
 </html>

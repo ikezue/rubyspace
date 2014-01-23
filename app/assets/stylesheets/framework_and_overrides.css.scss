@@ -1,48 +1,53 @@
-// import the CSS framework
 @import "foundation";
 
 // override for the 'Home' navigation link
-.top-bar .name {
+.top-bar .logo {
   font-size: rem-calc(13);
-  line-height: 45px; }
-.top-bar .name a {
-  font-weight: normal;
-  color: white;
-  padding: 0 15px; }
+  line-height: 45px;
+}
 
-// THESE ARE EXAMPLES YOU CAN MODIFY
-// create mixins using Foundation classes
-@mixin twelve-columns {
-  @extend .small-12;
-  @extend .columns;
-  }
-@mixin six-columns-centered {
-  @extend .small-6;
-  @extend .columns;
-  @extend .text-center;
-  }
-// create your own classes
-// to make views framework-neutral
-.column {
-  @include six-columns-centered;
-  }
-.form {
-  @include grid-column(6);
-  }
-.form-centered {
-  @include six-columns-centered;
-  }
-.submit {
-  @extend .button;
-  @extend .radius;
-  }
-// apply styles to HTML elements
-// to make views framework-neutral
+.top-bar .logo a {
+  font-weight: normal;
+  color: pink;
+  padding: 0 15px;
+}
+
+body {
+  background-color: mediumslateblue;
+}
+
 main {
-  @include twelve-columns;
-  background-color: #eee;
+  .messages {
+    @include grid-row();
+    .alert-box {
+      @include grid-column(12);
+    }
   }
-section {
-  @extend .row;
-  margin-top: 20px;
+
+  .content {
+    @include grid-row();
+    .feedback-wrapper {
+      @include grid-column(12);
+      .feedback {
+        @include grid-row();
+        text-align: center;
+        margin-top: 0.5em;
+        background-color: yellow;
+        .item {
+          @include grid-column(12);
+        }
+      }
+    }
+    .editor-wrapper {
+      @include grid-column(12);
+      .editor {
+        @include grid-row();
+        margin-top: 0.5em;
+        background-color: pink;
+        .item {
+          @include grid-column(12);
+        }
+      }
+    }
   }
+}
