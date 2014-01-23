@@ -21,18 +21,19 @@ group :development do
   gem 'better_errors',      '~> 1.1.0'
   gem 'binding_of_caller',  '~> 0.7.2'
   gem 'foundation-rails',   '~> 5.0.3'
-  gem 'guard-rspec',        '~> 4.2.2'
+  gem 'guard-rspec',        '~> 4.2.2', require: false
   gem 'meta_request',       '~> 0.2.8'
   gem 'pry-rails',          '~> 0.3.2'
   gem 'rails_layout',       '~> 1.0.5'
 end
 
 group :development, :test do
-  gem 'factory_girl_rails', '~> 4.3.0'
-  gem 'foreman',            '~> 0.63.0'
-  gem 'launchy',            '~> 2.4.2'
-  gem 'rspec-rails',        '~> 3.0.0.beta'
-  gem 'spring',             '~> 1.0.0'
+  gem 'factory_girl_rails',     '~> 4.3.0'
+  gem 'foreman',                '~> 0.63.0'
+  gem 'launchy',                '~> 2.4.2'
+  gem 'rspec-rails',            '~> 3.0.0.beta'
+  gem 'spring',                 '~> 1.0.0'
+  gem 'spring-commands-rspec',  '~> 1.0.1'
 end
 
 group :test do
