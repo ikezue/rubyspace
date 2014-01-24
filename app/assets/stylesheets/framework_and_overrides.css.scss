@@ -13,8 +13,21 @@
   padding: 0 15px;
 }
 
+$tomorrow-night-background: #1d1f21;
+$output-background: $tomorrow-night-background;
+$editor-background: $tomorrow-night-background;
+$correct-output-text: #b5d045;
+$wrong-output-text: #e3557d;
+
 body {
   background-color: mediumslateblue;
+}
+
+.correct-output {
+  color: $correct-output-text;
+}
+.wrong-output {
+  color: $wrong-output-text;
 }
 
 main {
@@ -45,18 +58,47 @@ main {
       .problem {
         @include grid-row();
       }
-      .output {
+      .attempts {
         @include grid-row();
+        .attempt {
+          @include grid-column(12);
+          .input {
+            @include grid-row();
+            .prompt {
+              @include grid-column(1);
+              background-color: yellow;
+            }
+            .viewer {
+              @include grid-column(11);
+              height: 30px;
+            }
+          }
+          .output {
+            @include grid-row();
+            .prompt {
+              @include grid-column(1);
+              background-color: red;
+            }
+            .result {
+              @include grid-column(11);
+              height: 30px;
+              background-color: $output-background;
+            }
+          }
+        }
       }
       .answer {
         @include grid-row();
+        padding: 0 15px;
         background-color: pink;
         @include border-radius(10px);
+        .prompt {
+          @include grid-column(1);
+          background-color: white;
+        }
         #editor {
-          @include grid-column(8);
-          margin: 0;
-          width:100%;
-          height:400px;
+          @include grid-column(11);
+          height:100px;
         }
       }
     }

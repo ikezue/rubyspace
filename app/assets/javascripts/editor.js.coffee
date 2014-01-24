@@ -1,73 +1,125 @@
-(->
+String::trim ?= ->
+  @replace /^\s+|\s+$/gm, ''
 
-  ENTER_KEY = 13
+String::stripQuotes ?= ->
+  [first, last] = [0, @length]
+  first += 1 if @[0] is '"'
+  last -= 1 if @[last-1] is '"'
+  @slice first, last
 
-  window.Module = {}
+Array::last ?= ->
+  @[@length - 1]
 
-  webruby = undefined
-  editor = undefined
-  history = []
+ENTER_KEY = 13
 
-  problem = "Concatenate the strings 'cow' and 'boy'."
-  answer = "cowboy"
+webruby = undefined
+window.Module = {}
+editor = undefined
+history = undefined
 
-  String::stripQuotes ?= ->
-    [first, last] = [0, @length]
-    first += 1 if @[0] is '"'
-    last -= 1 if @[last-1] is '"'
-    return @slice(first, last)
+problem = "Concatenate the strings 'cow' and 'boy'."
+answer = "cowboy"
 
-  Array::last ?= ->
-    @[@length - 1]
+class AceEditor
+  constructor: (@selector, options = {}) ->
+    options.readOnly ?= false
+    @editor = ace.edit @selector
+    @editor.setTheme "ace/theme/tomorrow_night"
+    @editor.getSession().setMode('ace/mode/ruby')
+    @editor.getSession().setUseSoftTabs true
+    @editor.getSession().setTabSize 2
+    @editor.renderer.setShowGutter false
+    @editor.setHighlightActiveLine false
+    @editor.setShowPrintMargin false
+    @editor.setReadOnly(true) if options.readOnly
 
-  setValue = (input) ->
-    editor.session.setValue(input)
+  setValue: (value) ->
+    @editor.setValue value
 
-  updateHistory = () ->
+  getValue: ->
+    @editor.getValue()
 
-  checkAnswer = (output) ->
-    if output is answer
-      console.log 'correct'
-    else
-      console.log 'wrong'
+  focus: ->
+    @editor.focus()
 
-  window.Module["print"] = (output) ->
-    output = output.stripQuotes()
-    history.last().output = output
-    checkAnswer output
-    updateHistory()
-    console.log output
-    console.log history
+class History
+  constructor: ->
+    @buffer = []
+    @cache = null
 
-  createEditor = (id) ->
-    editor = ace.edit id
-    editor.setTheme "ace/theme/tomorrow_night"
-    editor.getSession().setMode('ace/mode/ruby')
-    # editor.getSession().setUseSoftTabs true
-    editor.getSession().setTabSize 2
-    editor.renderer.setShowGutter false
-    editor.setHighlightActiveLine false
-    editor.setShowPrintMargin false
-    editor
+  setInput: (input) ->
+    @cache ?= {}
+    @cache.input = input
 
-  evaluate = (input) ->
-    console.log "input: #{input}"
-    history.push { input: input.stripQuotes(), output: null }
-    webruby.run_source input
+  setOutput: (output) ->
+    @cache ?= {}
+    @cache.output = output
 
-  $(document).ready ->
-    webruby = new WEBRUBY(print_level: 2)
+  flush: ->
+    @buffer.push @cache
 
-    editor = createEditor 'editor'
-    editor.setValue "puts 'string'"
+  printObj: (obj) ->
+    for k, v of obj
+      console.log "#{k}: #{v}"
 
-    $('#editor').keydown (e) ->
-      if e.keyCode == ENTER_KEY
-        e.preventDefault()
-        input = editor.getValue()
-        evaluate input if input
+  print: ->
+    for obj in @buffer
+      @printObj obj
 
-    window.onbeforeunload = ->
-      webruby.close()
+  renderCache: ->
+    attempts = $('.attempts')
+    prompt = '<span class="prompt">' + $('.answer .prompt').text() + '</span>'
 
-)()
+    attempts.append '<div class="attempt"></div>'
+    $('.attempt').last().append '<div class="input"></div><div class="output"></div>'
+
+    input = $('.input').last()
+    output = $('.output').last()
+
+    input.append prompt
+    viewerID = "viewer-#{@buffer.length}"
+    input.append "<div id=#{viewerID} class=\"viewer\"></div>"
+    # $('.attempt').last().find('.input .viewer').text(@cache.input)
+    viewer = new AceEditor($("##{viewerID}")[0], readOnly: true)
+    viewer.setValue @cache.input
+
+    output.append prompt
+    output.append "<span class=\"result\">#{@cache.output}</span>"
+
+evaluate = (input) ->
+  console.log "ev-input: #{input}"
+  history.setInput input.stripQuotes()
+  webruby.run_source input
+
+checkAnswer = (output) ->
+  output = output.stripQuotes()
+  history.setOutput output
+  if answer is output
+    console.log 'correct'
+  else
+    console.log 'wrong'
+  history.flush()
+  history.print()
+  history.renderCache()
+  editor.focus()
+
+window.Module["print"] = (output) ->
+  checkAnswer output
+
+$ ->
+  webruby = new WEBRUBY(print_level: 2)
+
+  history = new History()
+  editor = new AceEditor $('#editor')[0]
+  editor.setValue "Hello, let's start."
+
+  $('#editor').keydown (e) ->
+    if e.keyCode == ENTER_KEY
+      e.preventDefault()
+      console.log editor
+      input = editor.getValue().trim()
+      editor.setValue ''
+      evaluate input if input
+
+  window.onbeforeunload = ->
+    webruby.close()
