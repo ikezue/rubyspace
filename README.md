@@ -1,4 +1,4 @@
 Rubyspace
 =========
 
-App description
+An in-browser Ruby REPL built with Rails.
