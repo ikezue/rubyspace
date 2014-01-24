@@ -44,26 +44,23 @@ class AceEditor
 
 class History
   constructor: ->
-    @buffer = []
+    @store = []
     @cache = null
 
-  setInput: (input) ->
+  stash: (obj) ->
     @cache ?= {}
-    @cache.input = input
-
-  setOutput: (output) ->
-    @cache ?= {}
-    @cache.output = output
+    for key, value of obj
+      @cache[key] = value
 
   flush: ->
-    @buffer.push @cache
+    @store.push @cache
 
   printObj: (obj) ->
-    for k, v of obj
-      console.log "#{k}: #{v}"
+    for key, value of obj
+      console.log "#{key}: #{value}"
 
   print: ->
-    for obj in @buffer
+    for obj in @store
       @printObj obj
 
   renderCache: ->
@@ -77,33 +74,30 @@ class History
     output = $('.output').last()
 
     input.append prompt
-    viewerID = "viewer-#{@buffer.length}"
+    viewerID = "viewer-#{@store.length}"
     input.append "<div id=#{viewerID} class=\"viewer\"></div>"
-    # $('.attempt').last().find('.input .viewer').text(@cache.input)
     viewer = new AceEditor($("##{viewerID}")[0], readOnly: true)
     viewer.setValue @cache.input
 
     output.append prompt
-    output.append "<span class=\"result\">#{@cache.output}</span>"
+    output.append "<span class=\"result #{@cache.outputClass}\">#{@cache.output}</span>"
 
 evaluate = (input) ->
-  console.log "ev-input: #{input}"
-  history.setInput input.stripQuotes()
+  history.stash input: input.stripQuotes()
   webruby.run_source input
 
 checkAnswer = (output) ->
   output = output.stripQuotes()
-  history.setOutput output
-  if answer is output
-    console.log 'correct'
-  else
-    console.log 'wrong'
+  history.stash
+    output: output
+    outputClass: if answer is output then 'correct-output' else 'wrong-output'
+
   history.flush()
   history.print()
   history.renderCache()
   editor.focus()
 
-window.Module["print"] = (output) ->
+window.Module['print'] = (output) ->
   checkAnswer output
 
 $ ->
@@ -111,12 +105,11 @@ $ ->
 
   history = new History()
   editor = new AceEditor $('#editor')[0]
-  editor.setValue "Hello, let's start."
+  editor.setValue "\"Hello, let's start.\""
 
   $('#editor').keydown (e) ->
     if e.keyCode == ENTER_KEY
       e.preventDefault()
-      console.log editor
       input = editor.getValue().trim()
       editor.setValue ''
       evaluate input if input
