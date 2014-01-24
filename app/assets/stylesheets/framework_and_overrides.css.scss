@@ -18,9 +18,31 @@ $output-background: $tomorrow-night-background;
 $editor-background: $tomorrow-night-background;
 $correct-output-text: #b5d045;
 $wrong-output-text: #e3557d;
+$input-prompt-color: #b2d9d6;;
+$output-prompt-color: #b5a6d3;
+
+$code-font-size: 18px;
+
+@mixin code-font {
+  font: {
+    size: $code-font-size;
+    family: Menlo, Monaco, Inconsolata, Courier;
+  }
+}
+
+@mixin prompt {
+  padding-left: 45px;
+  padding-right: 0;
+  display: block;
+  font-weight: bold;
+}
 
 body {
   background-color: mediumslateblue;
+}
+
+.ace_sb {
+  overflow-y: hidden !important;
 }
 
 .correct-output {
@@ -42,6 +64,7 @@ main {
     @include grid-row();
     .feedback-wrapper {
       @include grid-column(12);
+      padding: 0;
       .feedback {
         @include grid-row();
         text-align: center;
@@ -55,6 +78,11 @@ main {
     }
     .editor-wrapper {
       @include grid-column(12);
+      @include code-font();
+      line-height: 22px;
+      background-color: $editor-background;
+      padding: 1em 0;
+      @include border-radius(10px);
       .problem {
         @include grid-row();
       }
@@ -66,10 +94,13 @@ main {
             @include grid-row();
             .prompt {
               @include grid-column(1);
-              background-color: yellow;
+              @include prompt();
+              color: #b2d9d6;
             }
             .viewer {
               @include grid-column(11);
+              @include code-font();
+              line-height: $code-font-size + 3;
               height: 30px;
             }
           }
@@ -77,12 +108,13 @@ main {
             @include grid-row();
             .prompt {
               @include grid-column(1);
-              background-color: red;
+              @include prompt();
+              color: $output-prompt-color;
             }
             .result {
               @include grid-column(11);
+              padding-left: 4px;
               height: 30px;
-              background-color: $output-background;
             }
           }
         }
@@ -90,15 +122,16 @@ main {
       .answer {
         @include grid-row();
         padding: 0 15px;
-        background-color: pink;
-        @include border-radius(10px);
         .prompt {
           @include grid-column(1);
-          background-color: white;
+          @include prompt();
+          color: $input-prompt-color;
         }
         #editor {
           @include grid-column(11);
-          height:100px;
+          @include code-font();
+          line-height: $code-font-size + 3;
+          height: 40px;
         }
       }
     }

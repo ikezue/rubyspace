@@ -24,8 +24,8 @@ class AceEditor
   constructor: (@selector, options = {}) ->
     options.readOnly ?= false
     @editor = ace.edit @selector
-    @editor.setTheme "ace/theme/tomorrow_night"
-    @editor.getSession().setMode('ace/mode/ruby')
+    @editor.setTheme 'ace/theme/tomorrow_night'
+    @editor.getSession().setMode 'ace/mode/ruby'
     @editor.getSession().setUseSoftTabs true
     @editor.getSession().setTabSize 2
     @editor.renderer.setShowGutter false
@@ -35,6 +35,7 @@ class AceEditor
 
   setValue: (value) ->
     @editor.setValue value
+    @editor.clearSelection()
 
   getValue: ->
     @editor.getValue()
@@ -64,36 +65,32 @@ class History
       @printObj obj
 
   renderCache: ->
-    attempts = $('.attempts')
-    prompt = '<span class="prompt">' + $('.answer .prompt').text() + '</span>'
-
-    attempts.append '<div class="attempt"></div>'
+    $('.attempts').append '<div class="attempt"></div>'
     $('.attempt').last().append '<div class="input"></div><div class="output"></div>'
 
     input = $('.input').last()
     output = $('.output').last()
 
-    input.append prompt
+    input.append "<span class=\"prompt\">=&gt</span>"
     viewerID = "viewer-#{@store.length}"
     input.append "<div id=#{viewerID} class=\"viewer\"></div>"
     viewer = new AceEditor($("##{viewerID}")[0], readOnly: true)
     viewer.setValue @cache.input
 
-    output.append prompt
+    output.append "<span class=\"prompt\">-&gt;</span>"
     output.append "<span class=\"result #{@cache.outputClass}\">#{@cache.output}</span>"
 
 evaluate = (input) ->
-  history.stash input: input.stripQuotes()
+  history.stash input: input
   webruby.run_source input
 
 checkAnswer = (output) ->
-  output = output.stripQuotes()
   history.stash
     output: output
-    outputClass: if answer is output then 'correct-output' else 'wrong-output'
+    outputClass: if answer is output.stripQuotes() then 'correct-output' else 'wrong-output'
 
   history.flush()
-  history.print()
+  # history.print()
   history.renderCache()
   editor.focus()
 
