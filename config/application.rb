@@ -28,14 +28,9 @@ module Rubyspace
     # config.i18n.default_locale = :de
 
     config.generators do |g|
-      g.test_framework :rspec,
-        controller_specs: true,
-        fixtures:         true,
-        helper_specs:     true,
-        view_specs:       false,
-        routing_specs:    false,
-        request_specs:    false
+      g.test_framework :rspec, fixture: true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
+      g.view_specs          false
     end
   end
 end
