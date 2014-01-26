@@ -17,11 +17,11 @@ gem 'sass-rails',           '~> 4.0.1'
 gem 'simple_form',          '~> 3.0.1'
 gem 'turbolinks',           '~> 1.2.0'
 gem 'uglifier',             '~> 2.1.1'
+gem 'foundation-rails',     '~> 5.0.3'
 
 group :development do
   gem 'better_errors',      '~> 1.1.0'
   gem 'binding_of_caller',  '~> 0.7.2'
-  gem 'foundation-rails',   '~> 5.0.3'
   gem 'guard-rspec',        '~> 4.2.2', require: false
   gem 'meta_request',       '~> 0.2.8'
   gem 'pry-rails',          '~> 0.3.2'
