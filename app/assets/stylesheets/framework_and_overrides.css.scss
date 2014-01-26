@@ -95,7 +95,7 @@ main {
             .prompt {
               @include grid-column(1);
               @include prompt();
-              color: #b2d9d6;
+              color: $input-prompt-color;
             }
             .viewer {
               @include grid-column(11);
