@@ -6,10 +6,10 @@
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Rubyspace" %>">
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
     <%= javascript_include_tag "vendor/modernizr" %>
-    <%= javascript_include_tag "mode-ruby" %>
-    <%= javascript_include_tag "theme-tomorrow_night" %>
     <%= javascript_include_tag "webruby" %>
     <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "mode-ruby" %>
+    <%= javascript_include_tag "theme-tomorrow_night" %>
     <%= csrf_meta_tags %>
   </head>
   <body>
