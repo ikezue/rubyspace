@@ -15,7 +15,6 @@
 //= require turbolinks
 //= require foundation
 //= require ace/ace
-//= require_tree ../../../vendor/assets/javascripts/.
 //= require_tree .
 $(function() {
   $(document).foundation();
