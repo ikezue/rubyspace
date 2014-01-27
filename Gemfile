@@ -29,12 +29,13 @@ group :development do
 end
 
 group :development, :test do
-  gem 'factory_girl_rails',     '~> 4.3.0'
-  gem 'foreman',                '~> 0.63.0'
-  gem 'launchy',                '~> 2.4.2'
-  gem 'rspec-rails',            '~> 3.0.0.beta'
-  gem 'spring',                 '~> 1.0.0'
-  gem 'spring-commands-rspec',  '~> 1.0.1'
+  gem 'factory_girl_rails',         '~> 4.3.0'
+  gem 'foreman',                    '~> 0.63.0'
+  gem 'launchy',                    '~> 2.4.2'
+  gem 'rspec-rails',                '~> 3.0.0.beta'
+  gem 'rspec-collection_matchers',  '~> 0.0.2'
+  gem 'spring',                     '~> 1.0.0'
+  gem 'spring-commands-rspec',      '~> 1.0.1'
 end
 
 group :test do

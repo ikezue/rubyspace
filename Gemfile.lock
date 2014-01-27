@@ -273,6 +273,7 @@ DEPENDENCIES
   rails!
   rails_12factor (~> 0.0.2)
   rails_layout (~> 1.0.5)
+  rspec-collection_matchers (~> 0.0.2)
   rspec-rails (~> 3.0.0.beta)
   sass-rails (~> 4.0.1)
   sdoc (~> 0.3.20)
