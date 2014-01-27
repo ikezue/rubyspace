@@ -1,0 +1,11 @@
+<div>
+  <% @problems.each do |problem| %>
+    <ul>
+      <li><%= problem.question %></li>
+      <li><%= problem.code %></li>
+      <li><%= problem.solution %></li>
+      <li><%= problem.answer %></li>
+      <li><%= problem.difficulty_level %></li>
+    </ul>
+  <% end %>
+</div>
