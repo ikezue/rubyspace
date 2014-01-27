@@ -13,6 +13,8 @@ Array::last ?= ->
   @[@length - 1]
 
 ENTER_KEY = 13
+UP_KEY    = 38
+DOWN_KEY  = 40
 
 webruby = undefined
 window.Module = {}
@@ -45,18 +47,34 @@ class AceEditor
   focus: ->
     @editor.focus()
 
+  bindKey: (name, key) ->
+    @editor.commands.addCommand
+      name: name
+      bindKey: key
+      exec: (e) -> false
+
 class History
   constructor: ->
     @store = []
-    @cache = null
+    @cache = {}
+    @cursor = 0
 
   stash: (obj) ->
-    @cache ?= {}
     for key, value of obj
       @cache[key] = value
 
   flush: ->
     @store.push @cache
+    @cache = {}
+    @cursor = @store.length
+
+  forward: ->
+    @cursor += 1 unless @cursor is @store.length
+    @store[@cursor] ? {}
+
+  rewind: ->
+    @cursor -= 1 unless @cursor is 0
+    @store[@cursor]
 
   printObj: (obj) ->
     for key, value of obj
@@ -91,9 +109,9 @@ checkAnswer = (output) ->
     output: output
     outputClass: if answer is output.stripQuotes() then 'correct-output' else 'wrong-output'
 
+  history.renderCache()
   history.flush()
   # history.print()
-  history.renderCache()
   editor.focus()
 
 window.Module['print'] = (output) ->
@@ -104,14 +122,23 @@ root.run = ->
 
   history = new History()
   editor = new AceEditor $('#editor')[0]
+  editor.bindKey 'up', 'Up'
+  editor.bindKey 'down', 'Down'
   editor.setValue "\"Hello, let's start.\""
 
   $('#editor').keydown (e) ->
-    if e.keyCode == ENTER_KEY
-      e.preventDefault()
-      input = editor.getValue().trim()
-      editor.setValue ''
-      evaluate input if input
+    key = e.keyCode
+    switch key
+      when ENTER_KEY, UP_KEY, DOWN_KEY
+        e.preventDefault()
+        if key is ENTER_KEY
+          input = editor.getValue().trim()
+          editor.setValue ''
+          evaluate input if input
+        else if key is UP_KEY
+          editor.setValue history.rewind().input ? ''
+        else
+          editor.setValue history.forward().output ? ''
 
   window.onbeforeunload = ->
     webruby.close()
