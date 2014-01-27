@@ -14,4 +14,9 @@ describe Problem do
     problem = build(:problem, answer: nil)
     expect(problem).to have(1).error_on(:answer)
   end
+
+  it "is invalid without a solution" do
+    problem = build(:problem, solution: nil)
+    expect(problem).to have(1).error_on(:solution)
+  end
 end
