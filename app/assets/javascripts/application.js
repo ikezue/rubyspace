@@ -15,6 +15,8 @@
 //= require turbolinks
 //= require foundation
 //= require ace/ace
+//= require ace/theme-tomorrow_night.js
+//= require ace/mode-ruby.js
 //= require_tree .
 $(function() {
   $(document).foundation();
