@@ -1,3 +1,5 @@
+root = exports ? this
+
 String::trim ?= ->
   @replace /^\s+|\s+$/gm, ''
 
@@ -97,7 +99,7 @@ checkAnswer = (output) ->
 window.Module['print'] = (output) ->
   checkAnswer output
 
-$ ->
+root.run = ->
   webruby = new WEBRUBY(print_level: 2)
 
   history = new History()
