@@ -124,6 +124,10 @@ class ProblemSet
     console.log "Finished!"
     console.log "You got #{@numberCorrect} out #{@problems.length}."
 
+  evaluate: (input) ->
+    history.stash input: input
+    webruby.run_source "#{@problems[@index].code};#{input}"
+
   gradeAnswer: (ans) ->
     isWrong = @problems[@index].answer isnt ans.stripQuotes()
     @numberCorrect++ unless isWrong
@@ -147,10 +151,6 @@ class ProblemSet
   showCode: (code) ->
     @editor.setValue code
 
-evaluate = (input) ->
-  history.stash input: input
-  webruby.run_source input
-
 window.Module['print'] = (result) ->
   problemSet.gradeAnswer result
 
@@ -163,7 +163,7 @@ addEventListeners = ->
         if key is ENTER_KEY
           input = editor.getValue().trim()
           editor.setValue ''
-          evaluate input if input
+          problemSet.evaluate input if input
         else if key is UP_KEY
           editor.setValue history.rewind().input ? ''
         else
