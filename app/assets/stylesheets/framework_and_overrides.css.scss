@@ -83,31 +83,31 @@ main {
 
   .content {
     @include grid-row();
-    .about {
+    .page {
       @include grid-column(12);
-      .about-header-wrapper {
+      .page-header-wrapper {
         @include grid-row();
         margin-top: 3em;
-        .about-header {
+        .page-header {
           @include grid-column($columns:8, $offset:2);
           h1 {
             @include code-font();
             font-size: 2.5em;
             font-style: bold;
             text-align: left;
-            color: white;
+            color: darken(white, 2%);
           }
         }
       }
-      .about-message-wrapper {
+      .page-message-wrapper {
         @include grid-row();
         margin-top: 1em;
-        .about-message {
+        .page-message {
           @include grid-column($columns:8, $offset:2);
           p {
             @include code-font();
             font-size: 1.2em;
-            color: white;
+            color: darken(white, 2%);
             a {
               padding-left: 1em;
               color: lighten($heroku-light-purple, 15%);
@@ -115,35 +115,6 @@ main {
                 color: lighten($heroku-light-purple, 35%);
               }
             }
-          }
-        }
-      }
-    }
-    .welcome {
-      @include grid-column(12);
-      .welcome-header-wrapper {
-        @include grid-row();
-        margin-top: 3em;
-        .welcome-header {
-          @include grid-column($columns:8, $offset:2);
-          h1 {
-            @include code-font();
-            font-size: 2.5em;
-            font-style: bold;
-            text-align: left;
-            color: white;
-          }
-        }
-      }
-      .welcome-message-wrapper {
-        @include grid-row();
-        margin-top: 1em;
-        .welcome-message {
-          @include grid-column($columns:8, $offset:2);
-          p {
-            @include code-font();
-            font-size: 1.2em;
-            color: white;
           }
         }
       }
