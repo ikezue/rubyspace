@@ -20,9 +20,7 @@ webruby = undefined
 window.Module = {}
 editor = undefined
 history = undefined
-
-problem = "Concatenate the strings 'cow' and 'boy'."
-answer = "cowboy"
+problemSet = undefined
 
 class AceEditor
   constructor: (@selector, options = {}) ->
@@ -100,32 +98,63 @@ class History
     output.append "<span class=\"prompt\">-&gt;</span>"
     output.append "<span class=\"result #{@cache.outputClass}\">#{@cache.output}</span>"
 
+class ProblemSet
+  constructor: (@problems, @editor) ->
+    @maxNumOfAttempts = 3
+    @attemptCount = 0
+    @index = 0
+    @numberCorrect = 0
+
+  start: ->
+    @askQuestion()
+
+  askQuestion: ->
+    @showQuestion @problems[@index].question
+    @showCode @problems[@index].code
+    editor.focus()
+
+  renderAnswer: (answer, htmlClass) ->
+    history.stash
+      output: answer
+      outputClass: htmlClass
+    history.renderCache()
+    history.flush()
+
+  end: ->
+    console.log "Finished!"
+    console.log "You got #{@numberCorrect} out #{@problems.length}."
+
+  gradeAnswer: (ans) ->
+    isWrong = @problems[@index].answer isnt ans.stripQuotes()
+    @numberCorrect++ unless isWrong
+
+    history.stash
+      output: ans
+      outputClass: if isWrong then 'wrong-output' else 'correct-output'
+    history.renderCache()
+    history.flush()
+    # history.print()
+
+    @index++
+    if @index < @problems.length
+      @askQuestion()
+    else
+      @end()
+
+  showQuestion: (question) ->
+    $('.problem .question').text question
+
+  showCode: (code) ->
+    @editor.setValue code
+
 evaluate = (input) ->
   history.stash input: input
   webruby.run_source input
 
-checkAnswer = (output) ->
-  history.stash
-    output: output
-    outputClass: if answer is output.stripQuotes() then 'correct-output' else 'wrong-output'
+window.Module['print'] = (result) ->
+  problemSet.gradeAnswer result
 
-  history.renderCache()
-  history.flush()
-  # history.print()
-  editor.focus()
-
-window.Module['print'] = (output) ->
-  checkAnswer output
-
-root.run = ->
-  webruby = new WEBRUBY(print_level: 2)
-
-  history = new History()
-  editor = new AceEditor $('#editor')[0]
-  editor.bindKey 'up', 'Up'
-  editor.bindKey 'down', 'Down'
-  editor.setValue "\"Hello, let's start.\""
-
+addEventListeners = ->
   $('#editor').keydown (e) ->
     key = e.keyCode
     switch key
@@ -142,3 +171,30 @@ root.run = ->
 
   window.onbeforeunload = ->
     webruby.close()
+
+startSession = ->
+  $(window).unbind 'keydown'
+  $('.welcome').remove()
+  $('.editor-wrapper').removeClass 'hidden'
+  # $('body').css("background-color", $('.editor-wrapper').css("background-color"))
+  addEventListeners()
+  problemSet.start()
+
+root.run = ->
+  webruby = new WEBRUBY(print_level: 2)
+  history = new History()
+
+  $.getJSON '/problems', (problems) ->
+    questionEditor = new AceEditor $('#question-code-viewer')[0], readOnly: true
+    problemSet = new ProblemSet problems, questionEditor
+
+  editor = new AceEditor $('#editor')[0]
+  editor.bindKey 'up', 'Up'
+  editor.bindKey 'down', 'Down'
+  editor.setValue ''
+  editor.focus()
+
+  $(window).keydown (e) ->
+    if e.keyCode is ENTER_KEY
+      e.preventDefault()
+      startSession()

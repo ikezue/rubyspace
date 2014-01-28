@@ -1,9 +1,7 @@
 class ProblemsController < ApplicationController
+  respond_to :html, :json
+
   def index
-    @problems = Problem.all
-    respond_to do |format|
-      format.html
-      format.json { render json: @problems }
-    end
+    respond_with(@problems = Problem.all)
   end
 end

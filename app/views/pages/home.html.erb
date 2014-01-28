@@ -8,24 +8,42 @@
   </script>
 <% end %>
 
-<div class="feedback-wrapper">
-  <div class="feedback">
-    <div class="item">
+<div class="welcome">
+  <div class="welcome-header-wrapper">
+    <div class="welcome-header">
       <h1>Welcome to RubySpace</h1>
+    </div>
+  </div>
+  <div class="welcome-message-wrapper">
+    <div class="welcome-message">
+      <p>Improve your Ruby skills, one session at a time, five problems per session.</p>
+      <p>Code entries are currently limited to one-liners although this may change, or not.</p>
+      <p>Press the Enter key to get started.</p>
     </div>
   </div>
 </div>
 
-<div class="editor-wrapper">
+<div class="editor-wrapper hidden">
+
   <div class="problem">
-
+    <div class="small-12 columns">
+      <div class="question-text">
+        <div class="question"></div>
+      </div>
+      <div class="question-code">
+        <span class="prompt">~&gt;</span>
+        <div id="question-code-viewer" class="viewer"></div>
+      </div>
+    </div>
   </div>
+
   <div class="attempts">
-
   </div>
+
   <div class="answer">
     <span class="prompt">=&gt;</span>
     <div id="editor">
     </div>
   </div>
+
 </div>

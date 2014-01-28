@@ -1,32 +1,49 @@
 @import "foundation";
 @import "compass/css3";
 
-// override for the 'Home' navigation link
-.top-bar .logo {
-  font-size: rem-calc(13);
-  line-height: 45px;
-}
-
-.top-bar .logo a {
-  font-weight: normal;
-  color: pink;
-  padding: 0 15px;
-}
-
 $tomorrow-night-background: #1d1f21;
 $output-background: $tomorrow-night-background;
 $editor-background: $tomorrow-night-background;
+$top-bar-background: $tomorrow-night-background;
+$heroku-dark-purple: #1a1a23;
+$heroku-light-purple: #464268;
 $correct-output-text: #b5d045;
 $wrong-output-text: #e3557d;
 $input-prompt-color: #b2d9d6;;
 $output-prompt-color: #b5a6d3;
-
 $code-font-size: 18px;
 
 @mixin code-font {
   font: {
     size: $code-font-size;
     family: Menlo, Monaco, Inconsolata, Courier;
+  }
+}
+
+@mixin code-font-family {
+  font: {
+    family: Menlo, Monaco, Inconsolata, Courier;
+  }
+}
+
+// override for the 'Home' navigation link
+.top-bar {
+  background-color: $heroku-light-purple;
+  .logo {
+    line-height: 45px;
+    a {
+      @include code-font-family();
+      color: darken(white, 6%);
+      padding: 0 15px;
+      font-size: 1.2em;
+    }
+  }
+  .nav-link {
+    a {
+      @include code-font-family();
+      color: darken(white, 10%);
+      font-size: 1.1em;
+    }
   }
 }
 
@@ -38,7 +55,11 @@ $code-font-size: 18px;
 }
 
 body {
-  background-color: mediumslateblue;
+  background-color: $heroku-dark-purple;
+}
+
+.hidden {
+  display: none;
 }
 
 .ace_sb {
@@ -62,17 +83,32 @@ main {
 
   .content {
     @include grid-row();
-    .feedback-wrapper {
+    .welcome {
       @include grid-column(12);
-      padding: 0;
-      .feedback {
+      .welcome-header-wrapper {
         @include grid-row();
-        text-align: center;
-        margin: 2em 0;
-        background-color: yellow;
-        @include border-radius(10px);
-        .item {
-          @include grid-column(12);
+        margin-top: 3em;
+        .welcome-header {
+          @include grid-column($columns:8, $offset:2);
+          h1 {
+            @include code-font();
+            font-size: 2.5em;
+            font-style: bold;
+            text-align: left;
+            color: white;
+          }
+        }
+      }
+      .welcome-message-wrapper {
+        @include grid-row();
+        margin-top: 1em;
+        .welcome-message {
+          @include grid-column($columns:8, $offset:2);
+          p {
+            @include code-font();
+            font-size: 1.2em;
+            color: white;
+          }
         }
       }
     }
@@ -81,10 +117,34 @@ main {
       @include code-font();
       line-height: 22px;
       background-color: $editor-background;
-      padding: 1em 0;
+      padding: 4em 0;
       @include border-radius(10px);
       .problem {
         @include grid-row();
+        margin-bottom: 1em;
+        .question-text {
+          @include grid-row();
+          .question {
+            @include grid-column(12);
+            padding-left: 2.5em;
+            color: white;
+            height: 30px;
+          }
+        }
+        .question-code {
+          @include grid-row();
+          .prompt {
+            @include grid-column(1);
+            @include prompt();
+            color: white;
+          }
+          .viewer {
+            @include grid-column(11);
+            @include code-font();
+            line-height: $code-font-size + 3;
+            height: 30px;
+          }
+        }
       }
       .attempts {
         @include grid-row();
@@ -140,7 +200,6 @@ main {
 
 .debug_dump {
   @include grid-column(12);
-  // @extend .panel;
   font-size: 16px;
   color: $input-prompt-color;
   margin-top: 4em;
