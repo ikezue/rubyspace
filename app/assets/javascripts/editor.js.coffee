@@ -120,9 +120,8 @@ class ProblemSet
     history.renderCache()
     history.flush()
 
-  end: ->
-    console.log "Finished!"
-    console.log "You got #{@numberCorrect} out #{@problems.length}."
+  score: ->
+    "#{@numberCorrect} out of #{@problems.length}"
 
   evaluate: (input) ->
     history.stash input: input
@@ -143,7 +142,7 @@ class ProblemSet
     if @index < @problems.length
       @askQuestion()
     else
-      @end()
+      endSession()
 
   showQuestion: (question) ->
     $('.problem .question').text question
@@ -174,11 +173,18 @@ addEventListeners = ->
 
 startSession = ->
   $(window).unbind 'keydown'
-  $('.welcome').remove()
+  $('.page').addClass 'hidden'
   $('.editor-wrapper').removeClass 'hidden'
   # $('body').css("background-color", $('.editor-wrapper').css("background-color"))
   addEventListeners()
   problemSet.start()
+
+endSession = ->
+  $('.editor-wrapper').addClass 'hidden'
+  $('.page-header h1').text 'Session complete!'
+  $('.page-message p').remove()
+  $('.page-message').append "<p>You scored #{problemSet.score()}.</p>"
+  $('.page').removeClass 'hidden'
 
 root.run = ->
   webruby = new WEBRUBY(print_level: 2)
